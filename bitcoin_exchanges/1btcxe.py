@@ -44,7 +44,7 @@ class OneBTCXE(ExchangeABC):
         # post_string = urllib.urlencode(params)
 
         # Hash the params string to produce the Sign header value
-        message = bytes(str(params['nonce']) + self.key).encode('utf-8')
+        message = bytes(json.dumps(params)).encode('utf-8')
         print message
         secret = bytes(self.secret).encode('utf-8')
 
@@ -54,7 +54,7 @@ class OneBTCXE(ExchangeABC):
         print urlpath
 
         try:
-            response = requests.post(url=urlpath, data=params, headers=headers, timeout=REQ_TIMEOUT).text
+            response = requests.post(url=urlpath, data=json.dumps(params) ,headers=headers, timeout=REQ_TIMEOUT).text
             print response
             # if "invalid nonce parameter" in response and retry < 3:
             #     return self.send_request(path=path, params=params, retry=retry + 1)
